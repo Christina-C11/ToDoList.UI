@@ -4,7 +4,6 @@ import { ToDoListComponent } from './to-do-list.component';
 
 const routes: Routes = [
   { path: '', component: ToDoListComponent },
-  // Add any other routes specific to the RsvpModule here
 ];
 
 @NgModule({
