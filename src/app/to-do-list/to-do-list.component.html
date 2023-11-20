@@ -1,30 +1,67 @@
-<p class="text-left">to-do-list works!</p>
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="vh-100" style="background-color: #eee;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-12 col-xl-10">
+        <div class="card">
+          <div class="card-header p-3">
+            <h5 class="mb-0"><i class="bi bi-list-task me-2"></i>To Do List</h5>
+          </div>
+          <div class="card-body" style="position: relative; max-height:500px; overflow-y: auto;">
+            <table class="table mb-0">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">No</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Due Date</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="fw-normal" *ngFor="let item of toDoList; index as i">
+                  <td class="align-middle">
+                    <button class="icon-button" title="Edit" (click)="editItem(item.id!)"><i class="bi bi-pencil-square"></i></button>
+                  </td>
+                  <td class="align-middle">
+                    <span>{{i+1}}</span>
+                  </td>
+                  <td class="align-middle">
+                    <span>{{item.title}}</span>
+                  </td>
+                  <td class="align-middle">
+                    <h6 class="mb-0">
+                      <div *ngIf="item.priority === priorityEnum.High" class="badge bg-danger">High priority</div>
+                      <div *ngIf="item.priority === priorityEnum.Medium" class="badge bg-warning">Medium priority</div>
+                      <div *ngIf="item.priority === priorityEnum.Low" class="badge bg-success">Low priority</div>
+                    </h6>
+                  </td>
+                  <td class="align-middle">
+                    <span>{{item.dueDate | date : 'dd-MM-yyyy HH:mm:ss'}}</span>
+                  </td>
+                  <td class="align-middle">
+                    <div [ngSwitch]="item.status">
+                      <ng-container *ngSwitchCase="statusEnum.Active">Active</ng-container>
+                      <ng-container *ngSwitchCase="statusEnum.Inactive">Inactive</ng-container>
+                      <ng-container *ngSwitchCase="statusEnum.IsCompleted">Completed</ng-container>
+                      <ng-container *ngSwitchCase="statusEnum.Expired">Expired</ng-container>
+                    </div>
+                  </td>
+                  <td class="align-middle">
+                    <button class="icon-button" title="Done" (click)="editItem(item.id!)"><i class="bi bi-check-lg text-success me-3"></i></button>
+                    <button class="icon-button" title="Remove" (click)="removeItem(item.id!)"><i class="bi bi-trash3 text-danger me-3"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-footer text-end p-3">
+            <button class="me-2 btn btn-link">Cancel</button>
+            <button class="btn btn-primary" (click)="addItem()">Add Task</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
