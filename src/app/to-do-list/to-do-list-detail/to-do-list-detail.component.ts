@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToDoItem } from '../to-do-list.model';
 import * as moment from 'moment';
@@ -21,10 +21,10 @@ export class ToDoListDetailComponent {
   toDoItem: ToDoItem = {};
   public form: FormGroup = new FormGroup({
     id: new FormControl(),
-    title: new FormControl(''),
+    title: new FormControl('', [Validators.required]),
     itemList: new FormControl(),
-    priority: new FormControl(this.priorityList[0].id),
-    dueDate: new FormControl(''),
+    priority: new FormControl(this.priorityList[0].id, [Validators.required]),
+    dueDate: new FormControl('', [Validators.required]),
     status: new FormControl()
   });
   title: string = "";
@@ -49,10 +49,23 @@ export class ToDoListDetailComponent {
   }
 
   closeDialog(){
-    this.dialogRef.close(this.form.getRawValue());
+    this.validateField();
+    this.form.markAllAsTouched();
+    if(this.form.valid){
+      this.dialogRef.close(this.form.getRawValue());
+    }
   }
   
   cancel(){
     this.dialogRef.close();
+  }
+
+  validateField(){
+    let priorityFC = this.getFormControl('priority');
+    (priorityFC.value == 0) ? priorityFC.setErrors({required: true}) : priorityFC.setErrors(null); 
+  }
+
+  isInvalid(formControl: FormControl){
+    return (formControl.invalid && (formControl.dirty || formControl.touched));
   }
 }
