@@ -28,42 +28,77 @@ export class ToDoListComponent {
   }
 
   addItem(){
+    this.isEdit = false;
     this.openDetail();
   }
 
-  editItem(itemId: string){
-    console.log(itemId);
+  editItem(item: ToDoItem){
+    this.isEdit = true;
+    this.openDetail(item);
   }
 
-  removeItem(itemId: string){
-    console.log(itemId);
+  updateStatus(item: ToDoItem){
+    item.status = Status.Completed;
+    this.updateToDoListItem(item);
   }
 
-  openDetail(){
+  removeItem(item: ToDoItem){
+    this.toDoListService.delete(item).subscribe((x:ToDoItem[]) =>{
+      //display latest list
+      this.toDoList = x; 
+    });
+  }
+
+  updateToDoListItem(req: ToDoItem){
+    this.toDoListService.update(req).subscribe((x:ToDoItem[]) =>{
+      if(x.length > 0){
+        //display latest list
+        this.toDoList = x; 
+      }
+    });
+  }
+
+  addToDoListItem(req: ToDoItem){
+    this.toDoListService.add(req).subscribe((x:ToDoItem[]) =>{
+      if(x.length > 0){
+        //display latest list
+        this.toDoList = x; 
+      }
+    });
+  }
+
+  openDetail(item?: ToDoItem){
     const dialogRef = this.dialog.open(ToDoListDetailComponent, {
       height: 'auto',
       width: '600px',
+      data:{
+       isEdit: this.isEdit,
+       toDoItem: item
+      }
     });
 
-    dialogRef.afterClosed().subscribe(item => {
-      const req : ToDoItem = {
-        title: item.title,
-        itemList: [],
-        priority: item.priority,
-        dueDate: item.dueDate,
-        status: Status.Active,
-        createdBy: "System",
-        createdDate: new Date(),
-        lastUpdatedBy: "System",
-        lastUpdatedDate: new Date()
-      }
-
-      this.toDoListService.add(req).subscribe((x:ToDoItem[]) =>{
-        if(x.length > 0){
-          //display latest list
-          this.toDoList = x; 
+    dialogRef.afterClosed().subscribe(detailItem => {
+      if(detailItem){
+        const req : ToDoItem = {
+          title: detailItem.title,
+          itemList: [],
+          priority: detailItem.priority,
+          dueDate: detailItem.dueDate,
+          status: Status.Active,
+          createdBy: "System",
+          createdDate: new Date(),
+          lastUpdatedBy: "System",
+          lastUpdatedDate: new Date()
         }
-      })
-    })
+  
+        if(!this.isEdit){
+          this.addToDoListItem(req);
+        }
+        else{
+          req.id = detailItem.id;
+          this.updateToDoListItem(req);
+        }
+      }
+    });
   }
 }

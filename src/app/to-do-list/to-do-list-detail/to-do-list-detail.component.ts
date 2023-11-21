@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ToDoItem } from '../to-do-list.model';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-to-do-list-detail',
@@ -10,24 +12,36 @@ import { MatDialogRef } from '@angular/material/dialog';
 export class ToDoListDetailComponent {
   selectedPriority: number = 0;
   priorityList = [
+    { id: 0, name: '--Please select--' },
     { id: 1, name: 'Low Priority' },
     { id: 2, name: 'Medium Priority' },
     { id: 3, name: 'High Priority' },
   ];
+  isEdit: boolean = false;
+  toDoItem: ToDoItem = {};
   public form: FormGroup = new FormGroup({
-    title: new FormControl(),
+    id: new FormControl(),
+    title: new FormControl(''),
     itemList: new FormControl(),
-    priority: new FormControl(),
-    dueDate: new FormControl(),
+    priority: new FormControl(this.priorityList[0].id),
+    dueDate: new FormControl(''),
     status: new FormControl()
   });
-
-  constructor(public dialogRef: MatDialogRef<ToDoListDetailComponent>) {
-
+  title: string = "";
+  constructor(public dialogRef: MatDialogRef<ToDoListDetailComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    this.title = this.data.dialogTitle;
+    this.isEdit = this.data.isEdit;
+    this.title = (this.isEdit) ? "Edit" : "Add";
+    this.toDoItem = this.data.toDoItem
   }
 
   ngOnInit(){
-
+    if(this.isEdit && this.toDoItem){
+      this.form.patchValue(this.toDoItem);
+      let formatedDate = moment(this.toDoItem.dueDate).format("YYYY-MM-DD");
+      this.getFormControl("dueDate").setValue(formatedDate);
+    }
   }
 
   getFormControl(controlName: string): FormControl{
@@ -36,5 +50,9 @@ export class ToDoListDetailComponent {
 
   closeDialog(){
     this.dialogRef.close(this.form.getRawValue());
+  }
+  
+  cancel(){
+    this.dialogRef.close();
   }
 }

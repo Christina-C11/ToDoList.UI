@@ -44,12 +44,12 @@
                     <div [ngSwitch]="item.status">
                       <ng-container *ngSwitchCase="statusEnum.Active">Active</ng-container>
                       <ng-container *ngSwitchCase="statusEnum.Inactive">Inactive</ng-container>
-                      <ng-container *ngSwitchCase="statusEnum.IsCompleted">Completed</ng-container>
+                      <ng-container *ngSwitchCase="statusEnum.Completed">Completed</ng-container>
                       <ng-container *ngSwitchCase="statusEnum.Expired">Expired</ng-container>
                     </div>
                   </td>
                   <td class="align-middle">
-                    <button class="icon-button" title="Done" (click)="editItem(item)"><i class="bi bi-check-lg text-success me-3"></i></button>
+                    <button class="icon-button" title="Done" (click)="updateStatus(item)"><i class="bi bi-check-lg text-success me-3"></i></button>
                     <button class="icon-button" title="Remove" (click)="removeItem(item)"><i class="bi bi-trash3 text-danger me-3"></i></button>
                   </td>
                 </tr>
@@ -62,7 +62,6 @@
             </table>
           </div>
           <div class="card-footer text-end p-3">
-            <button class="btn btn-link">Cancel</button>
             <button class="btn btn-primary" (click)="addItem()">Add Task</button>
           </div>
         </div>

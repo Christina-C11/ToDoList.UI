@@ -7,6 +7,6 @@ export enum Priority {
 export enum Status {
     Active = 0,
     Inactive = 1,
-    IsCompleted = 2,
+    Completed = 2,
     Expired = 3
 }
