@@ -38,6 +38,17 @@ export class ToDoListService {
     }));
   }
 
+  update(request: ToDoItem) {
+    return this.http.post<any>(`${this.baseUrl}/Update`, request, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    }).pipe(catchError((err: HttpErrorResponse) =>{
+      console.error(err);
+      throw err;
+    }));
+  }
+
   delete(request: ToDoItem) {
     return this.http.post<any>(`${this.baseUrl}/Delete`, request, {
       headers: new HttpHeaders({
