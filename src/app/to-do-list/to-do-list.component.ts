@@ -56,6 +56,7 @@ export class ToDoListComponent {
   }
 
   removeItem(item: ToDoItem){
+    item.getToDoItem = this.getToDoItemReq();
     this.toDoListService.delete(item).subscribe((x:ToDoItem[]) =>{
       //display latest list
       this.toDoList = x; 
