@@ -5,6 +5,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/for
 import { Priority, Status } from './to-do-list.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ToDoListDetailComponent } from './to-do-list-detail/to-do-list-detail.component';
+import { MessageBoxComponent } from '../message-box/message-box.component';
 
 @Component({
   selector: 'app-to-do-list',
@@ -39,7 +40,7 @@ export class ToDoListComponent {
 
   updateStatus(item: ToDoItem){
     item.status = Status.Completed;
-    this.updateToDoListItem(item);
+    this.openConfirmationBox(item);
   }
 
   removeItem(item: ToDoItem){
@@ -71,6 +72,7 @@ export class ToDoListComponent {
     const dialogRef = this.dialog.open(ToDoListDetailComponent, {
       height: 'auto',
       width: '600px',
+      disableClose: true,
       data:{
        isEdit: this.isEdit,
        toDoItem: item
@@ -84,7 +86,7 @@ export class ToDoListComponent {
           itemList: [],
           priority: detailItem.priority,
           dueDate: detailItem.dueDate,
-          status: Status.Active,
+          status: (detailItem.status === Status.Active) ? Status.Completed: Status.Active,
           createdBy: "System",
           createdDate: new Date(),
           lastUpdatedBy: "System",
@@ -101,4 +103,25 @@ export class ToDoListComponent {
       }
     });
   }
+
+  openConfirmationBox(item: ToDoItem){
+    const dialogRef = this.dialog.open(MessageBoxComponent, {
+      height: 'auto',
+      width: '400px',
+      disableClose: true,
+      data:{
+        toDoItem: item,
+        message: `Congratulations on completing`,
+        textToBold: item.title,
+        hasImage: true,
+        imageSrc: '/assets/images/pepe-thumbs-up.gif',
+        buttonText: 'Thanks Pepe'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(item =>{
+      this.updateToDoListItem(item);
+    });
+  }
+
 }

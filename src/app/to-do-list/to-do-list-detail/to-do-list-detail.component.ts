@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ToDoItem } from '../to-do-list.model';
 import * as moment from 'moment';
+import { Status } from '../to-do-list.enum';
 
 @Component({
   selector: 'app-to-do-list-detail',
@@ -10,15 +11,15 @@ import * as moment from 'moment';
   styleUrls: ['./to-do-list-detail.component.css']
 })
 export class ToDoListDetailComponent {
-  selectedPriority: number = 0;
-  priorityList = [
+  public selectedPriority: number = 0;
+  public priorityList = [
     { id: 0, name: '--Please select--' },
     { id: 1, name: 'Low Priority' },
     { id: 2, name: 'Medium Priority' },
     { id: 3, name: 'High Priority' },
   ];
-  isEdit: boolean = false;
-  toDoItem: ToDoItem = {};
+  public isEdit: boolean = false;
+  public toDoItem: ToDoItem = {};
   public form: FormGroup = new FormGroup({
     id: new FormControl(),
     title: new FormControl('', [Validators.required]),
@@ -27,13 +28,15 @@ export class ToDoListDetailComponent {
     dueDate: new FormControl('', [Validators.required]),
     status: new FormControl()
   });
-  title: string = "";
+  public title: string = "";
+  public buttonText: string = "";
   constructor(public dialogRef: MatDialogRef<ToDoListDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.title = this.data.dialogTitle;
     this.isEdit = this.data.isEdit;
     this.title = (this.isEdit) ? "Edit" : "Add";
-    this.toDoItem = this.data.toDoItem
+    this.toDoItem = this.data.toDoItem;
+    this.buttonText = (this.toDoItem.status === Status.Completed) ? "Active" : "Complete";
   }
 
   ngOnInit(){
