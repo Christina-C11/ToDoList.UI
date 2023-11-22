@@ -1,0 +1,9 @@
+<div class="d-flex m-3">
+    <div>
+        <h2>{{message}} <b>{{textToBold}}</b></h2>
+        <button class="btn btn-primary" (click)="close()">{{buttonText}}</button>
+    </div>
+    <div>
+        <img *ngIf="hasImage" [src]="imageSrc"/> 
+    </div>
+</div>
