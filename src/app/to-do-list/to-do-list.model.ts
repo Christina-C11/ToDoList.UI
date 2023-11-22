@@ -8,7 +8,8 @@ export interface ToDoItem {
     createdBy?: string,
     createdDate?: Date,
     lastUpdatedBy?: string,
-    lastUpdatedDate?: Date
+    lastUpdatedDate?: Date,
+    getToDoItem?: GetToDoItem
 }
 
 export interface ItemDetail {
@@ -19,4 +20,11 @@ export interface ItemDetail {
     createdDate?: Date,
     lastUpdatedBy?: string,
     lastUpdatedDate?: Date
+}
+
+export interface GetToDoItem{
+    pageIndex?: number;
+    totalPageCount?: number;
+    recordPerPage?: number;
+    toDoItems?: ToDoItem[]
 }

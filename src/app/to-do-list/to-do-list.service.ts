@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { ToDoItem } from './to-do-list.model';
+import { GetToDoItem, ToDoItem } from './to-do-list.model';
 import { catchError } from 'rxjs';
 
 @Injectable({
@@ -11,9 +11,12 @@ export class ToDoListService {
 
   constructor(private http: HttpClient) {}
 
-  getAll() {
-    return this.http.get<any>(`${this.baseUrl}/GetAll`).pipe(
-    catchError((err: HttpErrorResponse) =>{
+  getAll(request: GetToDoItem) {
+    return this.http.post<any>(`${this.baseUrl}/GetAll`, request, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    }).pipe(catchError((err: HttpErrorResponse) =>{
       console.error(err);
       throw err;
     }));

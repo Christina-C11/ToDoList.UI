@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ToDoListService } from './to-do-list.service';
-import { ToDoItem } from './to-do-list.model';
+import { GetToDoItem, ToDoItem } from './to-do-list.model';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { Priority, Status } from './to-do-list.enum';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,14 +18,26 @@ export class ToDoListComponent {
   public priorityEnum = Priority;
   public statusEnum = Status;
   public isEdit: boolean = true;
-
+  public recordPerPage = [10,20,30,50];
+  public form: FormGroup = new FormGroup({
+    recordPerPage: new FormControl(this.recordPerPage[0]),
+  });
+  public pageIndex: number = 0;
   constructor(private toDoListService: ToDoListService,
     public dialog: MatDialog) {}
 
   ngOnInit(){
-    this.toDoListService.getAll().subscribe((toDoList: ToDoItem[]) => {
-      this.toDoList = toDoList;
+    this.getAllItem();
+    this.getFormControl("recordPerPage").valueChanges.subscribe(records => {
+      this.getAllItem();
     })
+  }
+
+  getAllItem(){
+    const req = this.getToDoItemReq();
+    this.toDoListService.getAll(req).subscribe((toDoList: ToDoItem[]) => {
+      this.toDoList = toDoList;
+    });
   }
 
   addItem(){
@@ -90,7 +102,8 @@ export class ToDoListComponent {
           createdBy: "System",
           createdDate: new Date(),
           lastUpdatedBy: "System",
-          lastUpdatedDate: new Date()
+          lastUpdatedDate: new Date(),
+          getToDoItem: this.getToDoItemReq()
         }
   
         if(!this.isEdit){
@@ -105,6 +118,7 @@ export class ToDoListComponent {
   }
 
   openConfirmationBox(item: ToDoItem){
+    item.getToDoItem = this.getToDoItemReq();
     const dialogRef = this.dialog.open(MessageBoxComponent, {
       height: 'auto',
       width: '400px',
@@ -122,6 +136,17 @@ export class ToDoListComponent {
     dialogRef.afterClosed().subscribe(item =>{
       this.updateToDoListItem(item);
     });
+  }
+
+  getFormControl(controlName: string): FormControl{
+    return this.form.get(controlName) as any;
+  }
+
+  getToDoItemReq(): GetToDoItem{
+    return {
+      pageIndex: this.pageIndex,
+      recordPerPage: this.getFormControl('recordPerPage').value
+    }
   }
 
 }

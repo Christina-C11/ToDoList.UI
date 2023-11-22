@@ -36,7 +36,8 @@ export class ToDoListDetailComponent {
     this.isEdit = this.data.isEdit;
     this.title = (this.isEdit) ? "Edit" : "Add";
     this.toDoItem = this.data.toDoItem;
-    this.buttonText = (this.toDoItem.status === Status.Completed) ? "Active" : "Complete";
+    this.buttonText = (this.isEdit) ? ((this.toDoItem.status === Status.Completed) ?
+     "Set to Active" : "Set toComplete"): "Done";
   }
 
   ngOnInit(){
