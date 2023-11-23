@@ -18,6 +18,7 @@ export class ToDoListComponent {
   public priorityEnum = Priority;
   public statusEnum = Status;
   public isEdit: boolean = true;
+  public isRemove: boolean = false;
   public recordPerPage = [10,20,30,50];
   public form: FormGroup = new FormGroup({
     recordPerPage: new FormControl(this.recordPerPage[0]),
@@ -56,16 +57,14 @@ export class ToDoListComponent {
   }
 
   updateStatus(item: ToDoItem){
+    this.isRemove = false;
     item.status = Status.Completed;
     this.openConfirmationBox(item);
   }
 
   removeItem(item: ToDoItem){
-    item.getToDoItem = this.getToDoItemReq();
-    this.toDoListService.delete(item).subscribe((x:ToDoItem[]) =>{
-      //display latest list
-      this.toDoList = x; 
-    });
+    this.isRemove = true;
+    this.openConfirmationBox(item); 
   }
 
   updateToDoListItem(req: ToDoItem){
@@ -83,6 +82,13 @@ export class ToDoListComponent {
         //display latest list
         this.toDoList = x; 
       }
+    });
+  }
+
+  removeToDoListItem(req: ToDoItem){
+    this.toDoListService.delete(req).subscribe((x:ToDoItem[]) =>{
+      //display latest list
+      this.toDoList = x; 
     });
   }
 
@@ -131,16 +137,18 @@ export class ToDoListComponent {
       disableClose: true,
       data:{
         toDoItem: item,
-        message: `Congratulations on completing`,
+        message: (!this.isRemove) ? "Congratulations on completing" : "Are you sure to remove ",
         textToBold: item.title,
-        hasImage: true,
-        imageSrc: '/assets/images/pepe-thumbs-up.gif',
-        buttonText: 'Thanks Pepe'
+        hasImage:  !this.isRemove,
+        imageSrc:  (!this.isRemove) ? "/assets/images/pepe-thumbs-up.gif" : "",
+        buttonText:  (!this.isRemove) ? "Thanks Pepe": "Confirm"
       }
     });
 
     dialogRef.afterClosed().subscribe(item =>{
-      this.updateToDoListItem(item);
+      if(item){
+        (!this.isRemove) ? this.updateToDoListItem(item) :  this.removeToDoListItem(item);
+      }
     });
   }
 
@@ -152,7 +160,7 @@ export class ToDoListComponent {
     return {
       pageIndex: this.pageIndex,
       recordPerPage: this.getFormControl('recordPerPage').value,
-      searchText: this.getFormControl('searchText').value,
+      searchText: this.getFormControl('searchText').value
     }
   }
 

@@ -32,4 +32,8 @@ export class MessageBoxComponent {
   close(){
     this.dialogRef.close(this.toDoItem);
   }
+
+  cancel(){
+    this.dialogRef.close();
+  }
 }

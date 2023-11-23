@@ -1,7 +1,10 @@
 <div class="d-flex m-3">
     <div>
-        <h2>{{message}} <b>{{textToBold}}</b></h2>
-        <button class="btn btn-primary" (click)="close()">{{buttonText}}</button>
+        <h2>{{message}} <b>{{textToBold}}</b> {{!hasImage? "?" :""}}</h2>
+        <div class="d-flex" [ngClass]="{'justify-content-end' : !hasImage }">
+            <div class="me-3" *ngIf="!hasImage"><button class="btn btn-primary" (click)="cancel()">Cancel</button></div>
+            <div><button class="btn btn-primary" (click)="close()">{{buttonText}}</button></div>
+        </div>
     </div>
     <div>
         <img *ngIf="hasImage" [src]="imageSrc"/> 
