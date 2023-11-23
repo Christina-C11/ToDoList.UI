@@ -3,7 +3,6 @@
     border: none;      /* Remove border */
     padding: 0;        /* Remove padding */
     margin: 0;         /* Remove margin */
-    cursor: pointer;   /* Change cursor to pointer to indicate it's clickable */
 }
 
 /* Optional: Add styles for hover and focus states */

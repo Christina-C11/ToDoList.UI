@@ -9,7 +9,7 @@
           <div class="card-body" style="position: relative; max-height:500px; overflow-y: auto;" [formGroup]="form">
             <div class="d-flex">
               <div class="p-2">Records per page: </div>
-              <div class="p-2 dropdown">
+              <div class="p-1 dropdown">
                 <ng-select [clearable]="false" [searchable]="false" [formControl]="getFormControl('recordPerPage')">
                   <ng-option *ngFor="let record of recordPerPage" [value]="record">{{record}}</ng-option>
               </ng-select>
@@ -53,7 +53,9 @@
                     </div>
                   </td>
                   <td class="align-middle">
-                    <button class="icon-button" title="Complete" *ngIf="item.status != statusEnum.Completed" (click)="updateStatus(item)"><i class="bi bi-check-lg text-success me-3"></i></button>
+                    <button class="icon-button" title="Complete" [disabled]="item.status == statusEnum.Completed" (click)="updateStatus(item)">
+                      <i class="bi bi-check-lg me-3 " [ngClass]="item.status == statusEnum.Completed ? 'text-white pe-none' :'text-success'"></i>
+                    </button>
                     <button class="icon-button" title="Edit" (click)="editItem(item)"><i class="bi bi-pencil-square text-warning me-3"></i></button>               
                     <button class="icon-button" title="Remove" (click)="removeItem(item)"><i class="bi bi-trash3 text-danger me-3"></i></button>
                   </td>
