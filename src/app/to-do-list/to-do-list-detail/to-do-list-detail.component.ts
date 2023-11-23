@@ -14,9 +14,9 @@ export class ToDoListDetailComponent {
   public selectedPriority: number = 0;
   public priorityList = [
     { id: 0, name: '--Please select--' },
-    { id: 1, name: 'Low Priority' },
-    { id: 2, name: 'Medium Priority' },
-    { id: 3, name: 'High Priority' },
+    { id: 1, name: 'Low' },
+    { id: 2, name: 'Medium' },
+    { id: 3, name: 'High' },
   ];
   public isEdit: boolean = false;
   public toDoItem: ToDoItem = {};
