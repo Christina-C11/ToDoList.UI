@@ -26,5 +26,6 @@ export interface GetToDoItem{
     pageIndex?: number;
     totalPageCount?: number;
     recordPerPage?: number;
-    toDoItems?: ToDoItem[]
+    toDoItems?: ToDoItem[];
+    searchText?: string;
 }

@@ -21,6 +21,7 @@ export class ToDoListComponent {
   public recordPerPage = [10,20,30,50];
   public form: FormGroup = new FormGroup({
     recordPerPage: new FormControl(this.recordPerPage[0]),
+    searchText: new FormControl('')
   });
   public pageIndex: number = 0;
   constructor(private toDoListService: ToDoListService,
@@ -30,7 +31,11 @@ export class ToDoListComponent {
     this.getAllItem();
     this.getFormControl("recordPerPage").valueChanges.subscribe(records => {
       this.getAllItem();
-    })
+    });
+
+    this.getFormControl("searchText").valueChanges.subscribe(records => {
+      this.getAllItem();
+    });
   }
 
   getAllItem(){
@@ -146,7 +151,8 @@ export class ToDoListComponent {
   getToDoItemReq(): GetToDoItem{
     return {
       pageIndex: this.pageIndex,
-      recordPerPage: this.getFormControl('recordPerPage').value
+      recordPerPage: this.getFormControl('recordPerPage').value,
+      searchText: this.getFormControl('searchText').value,
     }
   }
 
