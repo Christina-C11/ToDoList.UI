@@ -5,7 +5,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/for
 import { Priority, Status } from './to-do-list.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ToDoListDetailComponent } from './to-do-list-detail/to-do-list-detail.component';
-import { MessageBoxComponent } from '../message-box/message-box.component';
+import { MessageBoxComponent } from '../general/message-box/message-box.component';
 
 @Component({
   selector: 'app-to-do-list',
@@ -110,7 +110,7 @@ export class ToDoListComponent {
           itemList: [],
           priority: detailItem.priority,
           dueDate: detailItem.dueDate,
-          status: (detailItem.status === Status.Completed) ? Status.Active: detailItem.status,
+          status: (!this.isEdit || detailItem.status === Status.Completed) ? Status.Active: detailItem.status,
           createdBy: "System",
           createdDate: new Date(),
           lastUpdatedBy: "System",

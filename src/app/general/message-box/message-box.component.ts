@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ToDoItem } from '../to-do-list/to-do-list.model';
+import { ToDoItem } from '../../to-do-list/to-do-list.model';
 
 @Component({
   selector: 'app-message-box',
