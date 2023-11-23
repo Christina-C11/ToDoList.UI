@@ -110,7 +110,7 @@ export class ToDoListComponent {
           itemList: [],
           priority: detailItem.priority,
           dueDate: detailItem.dueDate,
-          status: (detailItem.status === Status.Active) ? Status.Completed: Status.Active,
+          status: (detailItem.status === Status.Completed) ? Status.Active: detailItem.status,
           createdBy: "System",
           createdDate: new Date(),
           lastUpdatedBy: "System",
