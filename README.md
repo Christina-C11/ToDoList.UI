@@ -1,2 +1,2 @@
-# UI
- This UI project for To do list application
+# ToDoList.UI
+This is the UI(User Interface) of To Do List, is what people see and use when they interact with the To Do List app. It's created with Angular CLI, Node.js, npm, and TypeScript. The UI makes it easy for users to add, change, and see their to-do items on the screen. It is designed to be user-friendly, meaning that it's easy for people to understand and use. The UI is like the face of the app. It connects the user with the Backend part, allowing them to manage their to-do list in a simple and efficient way.
